@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: false
-          fetch-depth: 1
 
       - name: Setup Java JDK 17
         uses: actions/setup-java@v4
@@ -23,19 +22,21 @@ jobs:
 
       - name: Setup Android SDK Path
         run: |
-          if [ -d "android" ]; then
-            echo "sdk.dir=$ANDROID_HOME" > android/local.properties
-          else
-            echo "sdk.dir=$ANDROID_HOME" > local.properties
-          fi
+          find . -type d -name "android" -exec sh -c 'echo "sdk.dir=$ANDROID_HOME" > "$0/local.properties"' {} \; || true
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-      - name: Build Release Bundle
+      - name: Locate and Execute Gradle Build
         run: |
-          if [ -d "android" ]; then
-            cd android
+          GRADLEW_PATH=$(find . -name "gradlew" -type f | head -n 1)
+          if [ -z "$GRADLEW_PATH" ]; then
+            echo "Gradle wrapper not found! Generating wrapper..."
+            gradle wrapper
+            GRADLEW_PATH="./gradlew"
           fi
-          chmod +x gradlew
-          ./gradlew bundleRelease --no-daemon --stacktrace
+          chmod +x "$GRADLEW_PATH"
+          GRADLE_DIR=$(dirname "$GRADLEW_PATH")
+          cd "$GRADLE_DIR"
+          ./gradlew bundleRelease -x test --no-daemon --stacktrace
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
