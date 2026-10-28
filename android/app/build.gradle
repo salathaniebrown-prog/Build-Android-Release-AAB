@@ -32,6 +32,9 @@ android {
             matchingFallbacks = ['release', 'debug']
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            matchingFallbacks = ['debug', 'release']
+        }
     }
 }
 
