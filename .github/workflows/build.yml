@@ -11,14 +11,29 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          submodules: false
+          node-version: '20'
+
+      - name: Install Node Dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Setup Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
+
+      - name: Sync Capacitor Android Project
+        run: |
+          npx cap sync android || true
 
       - name: Generate local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
@@ -28,3 +43,9 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease -x test --no-daemon --console=plain -Djava.io.tmpdir=${{ runner.temp }}
+
+      - name: Upload Release AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: android/app/build/outputs/bundle/release/*.aab
