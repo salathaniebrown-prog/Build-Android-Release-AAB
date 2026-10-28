@@ -11,9 +11,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
+          fetch-depth: 1
 
       - name: Setup Java JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -31,7 +34,7 @@ jobs:
       - name: Build Release Bundle
         run: |
           cd $GRADLEW_DIR
-          ./gradlew bundle --no-daemon
+          ./gradlew bundleRelease --no-daemon
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
