@@ -11,11 +11,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
-      - name: Setup Node.js
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install Node Dependencies
         run: |
@@ -33,7 +35,7 @@ jobs:
 
       - name: Sync Capacitor Android Project
         run: |
-          npx cap sync android || true
+          npx cap sync android
 
       - name: Generate local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
