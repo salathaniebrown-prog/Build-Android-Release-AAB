@@ -19,7 +19,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: 'gradle'
 
       - name: Generate local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
@@ -28,10 +27,4 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew bundleRelease -x test --no-daemon --stacktrace -Djava.io.tmpdir=${{ runner.temp }}
-
-      - name: Upload Release AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-aab
-          path: android/app/build/outputs/bundle/release/*.aab
+          ./gradlew bundleRelease -x test --no-daemon --console=plain -Djava.io.tmpdir=${{ runner.temp }}
