@@ -1,57 +1,60 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.astra.studio"
-    compileSdkVersion 34
-
+    namespace "com.getcapacitor.myapp"
+    compileSdk 34
+    
     defaultConfig {
-        applicationId "com.astra.studio"
-        minSdkVersion 22
-        targetSdkVersion 34
+        applicationId "com.getcapacitor.myapp"
+        minSdk 22
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
-             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+            nestedWithAttributeValidation = true
         }
     }
-
-    signingConfigs {
-        release {
-            storeFile file("astra-release-key.jks")
-            storePassword "AstraSecure2026!"
-            keyAlias "astra_key_alias"
-            keyPassword "AstraSecure2026!"
-        }
-    }
-
+    
     buildTypes {
         release {
-            signingConfig signingConfigs.release
             minifyEnabled false
-            matchingFallbacks = ['release', 'debug']
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            matchingFallbacks = ['debug', 'release']
+            matchingFallbacks = ['release', 'debug']
         }
     }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.appcompat:appcompat:1.6.1"
-    implementation project(':capacitor-android')
-    testImplementation "junit:junit:4.13.2"
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    
+    // Adaptive multi-source plugin framework injection
+    if (findProject(':capacitor-android') != null) {
+        implementation project(':capacitor-android')
+    } else {
+        implementation 'com.capacitorjs:android:6.1.2'
+    }
+    
+    implementation project(':capacitor-cordova-android-plugins')
 }
 
 try {
-    def servicesJSON = file('google-services.json')
-    if (servicesJSON.text) {
+    def servicesConfig = file('google-services.json')
+    if (servicesConfig.exists()) {
         apply plugin: 'com.google.gms.google-services'
     }
-} catch(Exception e) {
-    logger.info("google-services.json not found, google-services plugin not applied.")
+} catch (Exception e) {
+    logger.warn("Google services configuration skipped.")
 }
