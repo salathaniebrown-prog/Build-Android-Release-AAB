@@ -23,11 +23,6 @@ allprojects {
         google()
         mavenCentral()
     }
-    configurations.all {
-        resolutionStrategy {
-            force 'androidx.core:core-ktx:1.12.0'
-        }
-    }
 }
 
 subprojects {
@@ -36,6 +31,14 @@ subprojects {
             project.android {
                 if (namespace == null) {
                     namespace project.group ?: "com.astra.${project.name.replace('-', '.')}"
+                }
+                buildTypes {
+                    release {
+                        matchingFallbacks = ['release', 'debug']
+                    }
+                }
+                publishing {
+                    singleVariant('release')
                 }
             }
         }
