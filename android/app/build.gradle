@@ -5,6 +5,9 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
+        missingDimensionStrategy 'store', 'play'
+        matchingFallbacks = ['release', 'debug']
+
         applicationId "com.alstra.astrastudio"
         minSdkVersion 22
         targetSdkVersion 34
