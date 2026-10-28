@@ -31,7 +31,7 @@ jobs:
       - name: Build Release Bundle
         run: |
           cd $GRADLEW_DIR
-          ./gradlew bundleRelease --no-daemon
+          ./gradlew bundle --no-daemon
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
