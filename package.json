@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@google/genai": "^2.31.0",
+    "@googleapis/drive": "^27.0.0",
+    "axios": "^1.21.0",
+    "better-sqlite3": "^13.0.3",
+    "blessed": "^0.1.81",
+    "cheerio": "^1.2.0",
+    "express": "^5.3.0",
+    "ws": "^8.22.0"
+  },
+  "name": "alstra-workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/username/repository.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/username/repository/issues"
+  },
+  "homepage": "https://github.com/username/repository#readme"
+}

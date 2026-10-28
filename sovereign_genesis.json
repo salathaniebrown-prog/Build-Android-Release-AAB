@@ -1,0 +1,10 @@
+{
+  "dossier": "ASTRA_SOVEREIGN_GENESIS_BLUEPRINT",
+  "operatorAuthority": {
+    "leadOperator": "Salathaniel S A Brown Sr.",
+    "primaryShare": "80.0%",
+    "coBeneficiary": "Alysia B Saunders",
+    "secondaryShare": "20.0%"
+  },
+  "chargebackTolerance": "0.0000%"
+}

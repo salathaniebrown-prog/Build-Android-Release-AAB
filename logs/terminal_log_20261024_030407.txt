@@ -1,0 +1,14 @@
+Termux & Debian Execution Log - Oct 24, 2026
+
+Active Sessions & Chat Logs:
+- Eagle Eyes Chat Logs: ~/alstra-workspace/logs/
+- Recorded Session IDs: 18280, 20817, 24298
+
+Ollama Local Service History:
+- Model: phi3:latest on http://127.0.0.1:11434
+- Flags: OLLAMA_CONTEXT_LENGTH=512 OLLAMA_NUM_PARALLEL=1 OLLAMA_MAX_LOADED_MODELS=1
+- Log: $HOME/ollama.log
+
+Engine & PM2 Configuration:
+- engine.js backup verified: engine.js.synthetic-backup-20261024-065300
+- Deployment target: proot-distro login debian running /root/server.js on port 3000

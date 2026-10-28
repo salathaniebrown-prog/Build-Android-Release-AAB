@@ -1,0 +1,13 @@
+{
+  "SECURITY_TOKEN": "SovereignToken2026",
+  "SERVER_PORT": 3000,
+  "RETENTION_DAYS": 7,
+  "ALLOWED_IPS": ["::1", "127.0.0.1", "::ffff:127.0.0.1"],
+  "ORCHESTRATION_MODEL": "gemini-3.8-flash",
+  "MAX_CREDIT_POINTS": 15000000,
+  "GLOBAL_REGIONS": [
+    { "region": "US-EAST-1", "latency": 13, "status": "PRIMARY_ACTIVE" },
+    { "region": "US-WEST-2", "latency": 24, "status": "ROUTE_SYNCHRONIZED" },
+    { "region": "CA-CENTRAL", "latency": 36, "status": "PEER_ONLINE" }
+  ]
+}
