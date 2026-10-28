@@ -25,7 +25,9 @@ jobs:
 
       - name: Build Release Bundle
         run: |
-          cd android
+          if [ -d "android" ]; then
+            cd android
+          fi
           chmod +x gradlew
           ./gradlew bundleRelease -x test --no-daemon --stacktrace
 
@@ -33,4 +35,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
-          path: android/app/build/outputs/bundle/release/*.aab
+          path: |
+            **/build/outputs/bundle/release/*.aab
+            **/outputs/bundle/release/*.aab
