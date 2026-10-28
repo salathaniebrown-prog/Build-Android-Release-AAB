@@ -26,16 +26,11 @@ allprojects {
 }
 
 subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty('android')) {
-            project.android {
+    afterEvaluate { subproject ->
+        if (subproject.plugins.hasPlugin('com.android.library')) {
+            subproject.android {
                 if (namespace == null) {
-                    namespace project.group ?: "com.astra.${project.name.replace('-', '.')}"
-                }
-                buildTypes {
-                    release {
-                        matchingFallbacks = ['release', 'debug']
-                    }
+                    namespace "com.astra.${subproject.name.replace('-', '.')}"
                 }
                 publishing {
                     singleVariant('release')
