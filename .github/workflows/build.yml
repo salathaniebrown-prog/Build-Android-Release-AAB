@@ -14,29 +14,19 @@ jobs:
         with:
           submodules: false
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Setup Android SDK Path
+      - name: Build Signed Release Bundle
         run: |
-          find . -type d -name "android" -exec sh -c 'echo "sdk.dir=$ANDROID_HOME" > "$0/local.properties"' {} \; || true
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-
-      - name: Locate and Execute Gradle Build
-        run: |
-          GRADLEW_PATH=$(find . -name "gradlew" -type f | head -n 1)
-          if [ -z "$GRADLEW_PATH" ]; then
-            echo "Gradle wrapper not found! Generating wrapper..."
-            gradle wrapper
-            GRADLEW_PATH="./gradlew"
+          if [ -f "android/gradlew" ]; then
+            cd android
           fi
-          chmod +x "$GRADLEW_PATH"
-          GRADLE_DIR=$(dirname "$GRADLEW_PATH")
-          cd "$GRADLE_DIR"
-          ./gradlew bundleRelease -x test --no-daemon --stacktrace
+          chmod +x gradlew
+          ./gradlew bundleRelease --no-daemon
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
@@ -44,4 +34,3 @@ jobs:
           name: app-release-aab
           path: |
             **/build/outputs/bundle/release/*.aab
-            **/outputs/bundle/release/*.aab
