@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          submodules: false
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4
@@ -20,12 +18,19 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      - name: Build Signed Release Bundle
+      - name: Locate and Grant gradlew Permissions
         run: |
-          if [ -f "android/gradlew" ]; then
-            cd android
+          GRADLEW_PATH=$(find . -maxdepth 3 -name "gradlew" -print -quit)
+          if [ -n "$GRADLEW_PATH" ]; then
+            chmod +x "$GRADLEW_PATH"
+            echo "GRADLEW_DIR=$(dirname "$GRADLEW_PATH")" >> $GITHUB_ENV
+          else
+            echo "gradlew not found!" && exit 1
           fi
-          chmod +x gradlew
+
+      - name: Build Release Bundle
+        run: |
+          cd $GRADLEW_DIR
           ./gradlew bundleRelease --no-daemon
 
       - name: Upload Release AAB Artifact
