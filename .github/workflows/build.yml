@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4
@@ -22,7 +24,7 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew bundleRelease
+          ./gradlew bundleRelease --no-daemon
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
