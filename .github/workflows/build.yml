@@ -41,10 +41,12 @@ jobs:
         run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
 
       - name: Build Release AAB
+        env:
+          GRADLE_USER_HOME: ${{ runner.temp }}/.gradle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew bundleRelease -x test --no-daemon --console=plain -Djava.io.tmpdir=${{ runner.temp }}
+          ./gradlew bundleRelease -x test --no-daemon --stacktrace --console=plain -Djava.io.tmpdir=${{ runner.temp }}
 
       - name: Upload Release AAB Artifact
         uses: actions/upload-artifact@v4
