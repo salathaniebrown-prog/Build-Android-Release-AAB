@@ -1,4 +1,3 @@
-// Dynamic Git-Level Distributed Architecture Matrix
 pluginManagement {
     repositories {
         google()
@@ -11,21 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
     }
 }
-
+rootProject.name = 'alstra-workspace'
 include ':app'
-
-// Adaptive Path Initialization Verification
-def capacitorDir = new File('capacitor-android/android')
-if (capacitorDir.exists() && capacitorDir.list()?.length > 0) {
-    logger.lifecycle("🧬 [Alstra Core]: Local git source structures active. Compiling from repository files.")
-    include ':capacitor-android'
-    project(':capacitor-android').projectDir = capacitorDir
-} else {
-    logger.lifecycle("📡 [Alstra Core]: Local submodule source unpopulated. Redirecting to cluster fallback layer.")
-}
-
+include ':capacitor-android'
+project(':capacitor-android').projectDir = new File('./capacitor-cordova-android-plugins/../capacitor-android')
 include ':capacitor-cordova-android-plugins'
-project(':capacitor-cordova-android-plugins').projectDir = new File('capacitor-cordova-android-plugins')

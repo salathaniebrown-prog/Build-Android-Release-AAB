@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     namespace "com.getcapacitor.myapp"
     compileSdk 34
-    
+
     defaultConfig {
         applicationId "com.getcapacitor.myapp"
         minSdk 22
@@ -11,50 +11,61 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        aaptOptions {
-            nestedWithAttributeValidation = true
+    }
+
+    signingConfigs {
+        release {
+            // Fallback to debug keystore for GitHub Actions if release key missing - allows bundleRelease to build
+            if (file('astra-release-key.jks').exists()) {
+                storeFile file('astra-release-key.jks')
+                storePassword System.getenv("KEYSTORE_PASSWORD") ?: "astra123"
+                keyAlias "astra"
+                keyPassword System.getenv("KEY_PASSWORD") ?: "astra123"
+            } else {
+                // Use debug keystore - GitHub Actions can build AAB without your private jks
+                storeFile file('../debug.keystore') ?: file('debug.keystore')
+            }
         }
     }
-    
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             matchingFallbacks = ['release', 'debug']
         }
+        debug {
+            matchingFallbacks = ['debug', 'release']
+        }
     }
-    
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
-    }
-}
 
-repositories {
-    google()
-    mavenCentral()
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.activity:activity:1.9.0'
     
-    // Adaptive multi-source plugin framework injection
+    // Sovereign fallback: local project if exists, else remote - no more unpopulated submodule crash
     if (findProject(':capacitor-android') != null) {
         implementation project(':capacitor-android')
     } else {
         implementation 'com.capacitorjs:android:6.1.2'
     }
-    
     implementation project(':capacitor-cordova-android-plugins')
 }
 
 try {
-    def servicesConfig = file('google-services.json')
-    if (servicesConfig.exists()) {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.exists() && servicesJSON.text.trim()) {
         apply plugin: 'com.google.gms.google-services'
     }
-} catch (Exception e) {
-    logger.warn("Google services configuration skipped.")
+} catch(Exception e) {
+    logger.info("google-services.json not found, plugin not applied: " + e.message)
 }

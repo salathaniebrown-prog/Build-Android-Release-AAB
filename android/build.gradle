@@ -1,20 +1,12 @@
+// Top-level build file
 buildscript {
-    ext {
-        compileSdkVersion = 34
-        selectTargetSdkVersion = 34
-        minSdkVersion = 22
-        targetSdkVersion = 34
-        androidxAppCompatVersion = '1.6.1'
-        junitVersion = '4.13.2'
-        androidxJunitVersion = '1.1.5'
-        androidxEspressoCoreVersion = '3.5.1'
-    }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
+        classpath 'com.android.tools.build:gradle:8.4.0'
+        classpath 'com.google.gms:google-services:4.4.2'
     }
 }
 
@@ -22,18 +14,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-}
-
-subprojects {
-    afterEvaluate { subproject ->
-        if (subproject.hasProperty('android')) {
-            subproject.android {
-                if (namespace == null) {
-                    namespace "com.astra.${subproject.name.replace('-', '.')}"
-                }
-            }
-        }
     }
 }
 
