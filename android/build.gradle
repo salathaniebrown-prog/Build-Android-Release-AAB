@@ -1,4 +1,14 @@
 buildscript {
+    ext {
+        compileSdkVersion = 34
+        selectTargetSdkVersion = 34
+        minSdkVersion = 22
+        targetSdkVersion = 34
+        androidxAppCompatVersion = '1.6.1'
+        junitVersion = '4.13.2'
+        androidxJunitVersion = '1.1.5'
+        androidxEspressoCoreVersion = '3.5.1'
+    }
     repositories {
         google()
         mavenCentral()
