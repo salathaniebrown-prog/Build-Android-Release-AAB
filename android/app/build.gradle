@@ -18,7 +18,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("../../astra-release-key.jks")
+            storeFile file("astra-release-key.jks")
             storePassword "AstraSecure2026!"
             keyAlias "astra_key_alias"
             keyPassword "AstraSecure2026!"
