@@ -1,34 +1,9 @@
-plugins {
-  id 'com.android.application'
-}
+plugins { id 'com.android.application' version '8.3.2' apply true }
 android {
   namespace "com.getcapacitor.myapp"
   compileSdk 34
-  defaultConfig {
-    applicationId "com.getcapacitor.myapp"
-    minSdk 22
-    targetSdk 34
-    versionCode 1
-    versionName "1.0"
-  }
-  buildTypes {
-    release {
-      minifyEnabled false
-      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-    }
-  }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
-  }
+  defaultConfig { applicationId "com.getcapacitor.myapp"; minSdk 22; targetSdk 34; versionCode 1; versionName "1.0" }
+  buildTypes { release { minifyEnabled false } }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }
-dependencies {
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
-  implementation 'androidx.appcompat:appcompat:1.7.0'
-  implementation project(':capacitor-android')
-  implementation project(':capacitor-cordova-android-plugins')
-}
-try {
-  def gs = file('google-services.json')
-  if (gs.exists()) { apply plugin: 'com.google.gms.google-services' }
-} catch(Exception ignored) {}
+dependencies { implementation 'androidx.appcompat:appcompat:1.7.0' }
