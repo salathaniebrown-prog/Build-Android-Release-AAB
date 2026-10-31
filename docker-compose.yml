@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  alstra-vector-core:
+    image: python:3.11-slim
+    container_name: alstra_vector_core_duo
+    restart: always
+    environment:
+      - OPERATOR_ID=salathaniebrown@gmail.com
+      - SYSTEM_MODE=MAX_PERFORMANCE_OVERRIDE
+      - COMPUTE_MATRIX=ALPHA_DUO
+    volumes:
+      - ~/alstra-workspace:/root/alstra-workspace
+    ports:
+      - "8081:8081"
+      - "4001:4001"
+    command: >
+      sh -c "pip install --no-cache-dir websockets sqlite3 qiskit &&
+             python3 -u /root/alstra-workspace/vector_memory_core.py &
+             python3 -u /root/alstra-workspace/astra_websocket_bridge.py"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import os; exit(0 if os.path.exists('/root/alstra-workspace/deepspace_ledgers.db') else 1)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  alstra-edge-gateway:
+    image: nginx:alpine
+    container_name: alstra_edge_gateway_buda
+    restart: always
+    ports:
+      - "5001:5001"
+    depends_on:
+      alstra-vector-core:
+        condition: service_healthy
+
+networks:
+  default:
+    name: alstra_crypto_mesh_network
+    driver: bridge
