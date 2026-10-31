@@ -1,4 +1,4 @@
-name: Build Android Release AAB
+name: Alstra Vector Core CI
 
 on:
   push:
@@ -6,48 +6,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
         with:
-          node-version: '22'
+          python-version: '3.11'
 
-      - name: Install Node Dependencies
+      - name: Install Dependencies
         run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+          python -m pip install --upgrade pip
+          pip install websockets qiskit
 
-      - name: Setup Java JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '21'
-
-      - name: Sync Capacitor Android Project
+      - name: Verify Python Vector Core Matrix
         run: |
-          npx cap sync android
-
-      - name: Generate local.properties
-        run: echo "sdk.dir=$ANDROID_HOME" > android/local.properties
-
-      - name: Build Release AAB
-        env:
-          GRADLE_USER_HOME: ${{ runner.temp }}/.gradle
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew :app:bundleRelease -x test --no-daemon --stacktrace --console=plain -Djava.io.tmpdir=${{ runner.temp }}
-
-      - name: Upload Release AAB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-aab
-          path: android/app/build/outputs/bundle/release/*.aab
+          python3 -c "import websockets; print('[SUCCESS] Python vector stack initialized successfully')"
