@@ -1,0 +1,9 @@
+{
+  "name": "astra-enterprise-core",
+  "version": "14.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}
